@@ -15,13 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
     - uses: actions/checkout@v3
-    - name: Instatll NPM dependencies
     - run: npm install
-    - name: Build project
     - run: npm run build
-    - name: Create static
     - run: npm run export
     
     - name: Deploy to Neocities
