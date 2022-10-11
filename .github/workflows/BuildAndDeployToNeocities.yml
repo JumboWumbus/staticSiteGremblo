@@ -1,0 +1,43 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: BuildAndDeployToNeocities
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build
+    - run: npm run export
+    
+    - name: Deploy to Neocities
+  # You may pin to the exact commit or the version.
+  # uses: bcomnes/deploy-to-neocities@36e9d756435b31a2c1e13270272dd2f3376bdad4
+      uses: bcomnes/deploy-to-neocities@v1.1.9
+      with:
+    # Neocities API token for site to deploy to
+        api_token: ${{secrets.NEOCITIES_API_TOKEN}}
+    # Local folder to deploy to neocities
+        dist_dir: out
+    # Delete orphaned files on neocities that don't exist in distDir
+        cleanup: true
