@@ -14,20 +14,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
+    - name: Checkout Code
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
+    - name: Instatll NPM dependencies
+    - run: npm install
+    - name: Build project
     - run: npm run build
+    - name: Create static
     - run: npm run export
     
     - name: Deploy to Neocities
