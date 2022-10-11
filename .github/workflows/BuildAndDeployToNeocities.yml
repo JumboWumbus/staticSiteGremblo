@@ -10,8 +10,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build-project:
+    name: Build Project
     runs-on: ubuntu-latest
 
     steps:
