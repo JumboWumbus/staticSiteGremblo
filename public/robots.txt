@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://gremblo.neocities.org/
+
+# Sitemaps
+Sitemap: https://gremblo.neocities.org/sitemap.xml
