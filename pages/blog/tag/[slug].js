@@ -19,21 +19,20 @@ export default function tag({ posts }) {
 }
 
 export async function getStaticPaths() {
-  // get all posts form posts
   const files = fs.readdirSync(path.join('posts'));
+
   let tempStorage = [];
-  // get posts slug and meta data
+
   const temppaths = files.map(filename => {
     const markdownWithMeta = fs.readFileSync(
       path.join('posts', filename),
       'utf-8'
     );
-    // get frontmatter data form posts
+
     const { data: frontmatter } = matter(markdownWithMeta);
-    // get publish post
+
     if (frontmatter.draft === false) {
       frontmatter.tags.map(tag => {
-        // convert into slug
         let slug = slugify(tag);
         tempStorage.push({ params: { slug } });
       });
@@ -41,26 +40,36 @@ export async function getStaticPaths() {
       return null;
     }
   });
-  // filter posts
+
   const paths = tempStorage.filter((item, index) => {
     return tempStorage.indexOf(item) === index;
   });
 
-  return { paths, fallback: false };
+  // const paths=["npm"]
+
+  return {
+    paths,
+    fallback: false
+  };
 }
 
 export async function getStaticProps({ params: { slug } }) {
   // Get files from the posts dir
   const files = fs.readdirSync(path.join('posts'));
+
   let tempStorage = [];
+
   // Get slug and frontmatter from posts
+
   const tempPosts = files.map(filename => {
     // Get frontmatter
     const markdownWithMeta = fs.readFileSync(
       path.join('posts', filename),
       'utf-8'
     );
+
     const { data: frontmatter } = matter(markdownWithMeta);
+
     if (frontmatter.draft === false) {
       frontmatter.tags.map(tag => {
         let tagSlug = slugify(tag);
@@ -72,9 +81,16 @@ export async function getStaticProps({ params: { slug } }) {
       return null;
     }
   });
+
   //  remove null in tempPosts
+
   const posts = tempStorage.filter(post => {
     return post && post;
   });
-  return { props: { posts } };
+
+  return {
+    props: {
+      posts
+    }
+  };
 }
