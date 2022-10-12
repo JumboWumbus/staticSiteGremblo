@@ -4,8 +4,6 @@ import 'prismjs/plugins/toolbar/prism-toolbar.css';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
 import { slugify } from '../../../utils';
 import Link from 'next/link';
 import { marked } from 'marked';
@@ -21,7 +19,7 @@ import markdownToHtml from '../../../lib/markdownToHtml';
 export default function PostPage({ content, frontmatter, blogContent }) {
   const date = new Date(frontmatter.date);
 
-  const doc = parser(marked.parse(content));
+  const doc = parser(marked.parse(blogContent));
 
   const headings = [...doc.querySelectorAll('h1, h2, h3')];
 

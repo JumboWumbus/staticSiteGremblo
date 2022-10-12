@@ -36,7 +36,7 @@ You can install any package base on two methods. I know there are other methods,
 1. Syntax
 2. Options or Flags
 
-## Syntax
+## Syntax {#Syntax}
 
 1. npm install
 2. npm package **`<name>`**
@@ -44,7 +44,7 @@ You can install any package base on two methods. I know there are other methods,
 4. npm install **`<name>@<version>`**
 5. npm install **`<git repo URL>`**
 
-### npm install
+### npm install {#npm-install}
 
 npm install command is the most used command in the npm world. The npm install command downloads all packages from the [npmjs](https://www.npmjs.com/) website and store them in the node_modules folder.
 
