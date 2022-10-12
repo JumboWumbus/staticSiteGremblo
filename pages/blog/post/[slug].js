@@ -1,16 +1,11 @@
-import prism from 'prismjs';
-
-import 'prismjs/components/prism-json';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
-import 'prismjs/plugins/toolbar/prism-toolbar';
-import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
-import 'prismjs/plugins/show-language/prism-show-language';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/plugins/toolbar/prism-toolbar.css';
 
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { remark } from 'remark';
+import html from 'remark-html';
 import { slugify } from '../../../utils';
 import Link from 'next/link';
 import { marked } from 'marked';
@@ -21,15 +16,9 @@ import { decode } from 'html-entities';
 import s from '../../../styles/BlogPost.module.scss';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import markdownToHtml from '../../../lib/markdownToHtml';
 
-export default function PostPage({ content, frontmatter }) {
-  useEffect(() => {
-    const highlight = async () => {
-      await Prism.highlightAll(); // <--- prepare Prism
-    };
-    highlight(); // <--- call the async function
-  }, [content]);
-
+export default function PostPage({ content, frontmatter, blogContent }) {
   const date = new Date(frontmatter.date);
 
   const doc = parser(marked.parse(content));
@@ -102,7 +91,9 @@ export default function PostPage({ content, frontmatter }) {
               <>
                 <div
                   className='post-body p-5 m-auto'
-                  dangerouslySetInnerHTML={{ __html: marked.parse(content) }}
+                  dangerouslySetInnerHTML={{
+                    __html: marked.parse(blogContent)
+                  }}
                 ></div>
               </>
             </div>
@@ -154,13 +145,16 @@ export async function getStaticProps({ params: { slug } }) {
   );
   const { data: frontmatter, content } = matter(markdownWithMeta);
 
+  const blogContent = await markdownToHtml(content);
+
   //console.log(doc);
 
   return {
     props: {
       frontmatter,
       slug,
-      content
+      content,
+      blogContent
     }
   };
 }
