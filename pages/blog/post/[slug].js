@@ -1,3 +1,13 @@
+const prism = require('prismjs');
+
+require('prismjs/components/prism-json');
+require('prismjs/plugins/line-numbers/prism-line-numbers');
+require('prismjs/plugins/toolbar/prism-toolbar');
+require('prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard');
+require('prismjs/plugins/show-language/prism-show-language');
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+import 'prismjs/plugins/toolbar/prism-toolbar.css';
+
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
@@ -10,8 +20,12 @@ import { decode } from 'html-entities';
 
 import s from '../../../styles/BlogPost.module.scss';
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 export default function PostPage({ content, frontmatter }) {
+  useEffect(() => {
+    prism.highlightAll();
+  }, []);
   const date = new Date(frontmatter.date);
 
   const doc = parser(marked.parse(content));
@@ -48,8 +62,8 @@ export default function PostPage({ content, frontmatter }) {
             </ul>
           </nav>
           <article className={s.content}>
-            <div className='card card-page'>
-              <a href={`/blog/post/${frontmatter.slug}`}>
+            <div className='card card-page line-numbers'>
+              <a href={`/blog/post/${frontmatter.slug}.html`}>
                 {' '}
                 <img
                   className='card-img-top'
@@ -71,7 +85,7 @@ export default function PostPage({ content, frontmatter }) {
                   {frontmatter.categories.map(category => {
                     const slug = slugify(category);
                     return (
-                      <Link key={category} href={`/blog/category/${slug}`}>
+                      <Link key={category} href={`/blog/category/${slug}.html`}>
                         <a className='btn'>
                           <h6 className=' post-title'>#{category}</h6>
                         </a>
