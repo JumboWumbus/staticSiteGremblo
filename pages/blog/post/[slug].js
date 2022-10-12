@@ -5,14 +5,49 @@ import { slugify } from '../../../utils';
 import Link from 'next/link';
 import { marked } from 'marked';
 import SITE_URL from '../../../config';
+import parser from 'node-html-parser';
+import { decode } from 'html-entities';
+
+import s from '../../../styles/BlogPost.module.scss';
+import Head from 'next/head';
 
 export default function PostPage({ content, frontmatter }) {
   const date = new Date(frontmatter.date);
+
+  const doc = parser(marked.parse(content));
+
+  const headings = [...doc.querySelectorAll('h1, h2, h3')];
+
+  const parseHeadings = headings.map(heading => {
+    return {
+      title: decode(heading.innerText),
+      depth: heading.rawTagName.replace(/\D/g, ''),
+      id: heading.getAttribute('id')
+    };
+  });
+  console.log(parseHeadings);
+
   return (
     <>
-      <div className='container my-5'>
-        <div className='row'>
-          <div className='col-lg-10 m-auto'>
+      <div className={s.container}>
+        <Head>
+          <title>Gremblo zone</title>
+          <meta name='description' content='Gremblos den' />
+          <link rel='icon' href='/favicon.ico' />
+        </Head>
+
+        <div className={s.wrapper}>
+          <header className={s.head}>The header</header>
+          <nav className={s.nav}>
+            <ul className={s.anchorList}>
+              {parseHeadings.map((h, index) => (
+                <li key={index} className={h.depth}>
+                  <a href={`#${h.id}`}>{h.title}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <article className={s.content}>
             <div className='card card-page'>
               <a href={`/blog/post/${frontmatter.slug}`}>
                 {' '}
@@ -50,7 +85,10 @@ export default function PostPage({ content, frontmatter }) {
                 dangerouslySetInnerHTML={{ __html: marked.parse(content) }}
               ></div>
             </div>
-          </div>
+          </article>
+          <aside className={s.sidebar}>Sidebar</aside>
+          <div className={s.adverts}>Advertising</div>
+          <footer className={s.footer}>Gooter</footer>
         </div>
       </div>
     </>
@@ -94,6 +132,9 @@ export async function getStaticProps({ params: { slug } }) {
     'utf-8'
   );
   const { data: frontmatter, content } = matter(markdownWithMeta);
+
+  //console.log(doc);
+
   return {
     props: {
       frontmatter,

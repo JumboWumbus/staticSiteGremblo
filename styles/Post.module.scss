@@ -1,0 +1,146 @@
+@import './colors.scss';
+@import '~rfs/scss';
+
+
+$dark: #19191c;
+$lessDark: #303035;
+$gutter: 16px;
+$minWidth: 320px;
+$maxWidth: 1fr;
+
+/*
+1. 1:1 - 100%
+2. 16:9 - 56.25%
+3. 4:3 - 75%
+4. 3:2 - 66.66%
+5. 8:5 - 62.5%
+*/
+$ratio: 56.25%;
+
+.PARENTPOSTCONTAINER {
+    display: grid;
+    grid-gap: $gutter;
+    /*
+	Minimum Width = 368px
+	Maximum Width = 1fr i.e full width
+	A card will wrap to next row if the browser can not fit cards with their minimum width
+	
+	auto-fill - this will try to fill all the columns or leave an empty columns if there aren't enough cards
+	*/
+    grid-template-columns: repeat(auto-fill, minmax($minWidth, $maxWidth));
+
+
+    // auto-fit - this will fit all the cards in single row if the browser's width is equal to width of all the cards combine + gap
+    // grid-template-columns: repeat(auto-fit, minmax($minWidth, $maxWidth));
+
+    @media screen and (max-width: 320px) {
+        grid-template-columns: repeat(auto-fill, minmax(100%, $maxWidth));
+    }
+}
+
+
+.postContainer {
+    background: $lessDark;
+    padding-top: $ratio;
+    padding-bottom: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+        top: 0;
+        left: 0;
+        width: 100%;
+        position: absolute;
+    }
+}
+
+.cardBody {
+    padding-inline: 2em;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+
+    h2 {
+        @include margin-top(0.5rem);
+        @include font-size(1.5rem);
+        @include margin-bottom(0.5rem);
+
+    }
+
+    .summary {
+        flex: 1 0 auto;
+    }
+}
+
+.cardFooter {
+
+
+    ul {
+        margin-block: 1em;
+        list-style: none;
+        display: flex;
+        justify-content: flex-end;
+        padding-left: 0;
+
+        li {
+            color: #999999;
+            font-size: 0.75rem;
+            height: 1.5rem;
+            letter-spacing: 1px;
+            line-height: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            white-space: nowrap;
+
+            &:first-child {
+                margin-right: auto;
+            }
+
+            .postDate {
+                border: 1px solid #999999;
+                border-radius: 3px;
+                padding: 0 0.5rem;
+            }
+
+            .readTime {
+                margin-right: 1em;
+            }
+        }
+
+
+
+    }
+}
+
+
+
+.tagContainer {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+
+
+}
+
+.tag {
+    background-color: $tags;
+    margin: 0;
+    border-radius: 0.5em;
+
+    border: 1px solid #999999;
+    font-size: 0.75rem;
+
+    line-height: 1.5em;
+
+    letter-spacing: 1px;
+    padding: 0.5em 0.8em;
+    text-align: center;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: lighten($color: $tags, $amount: 5);
+    }
+}

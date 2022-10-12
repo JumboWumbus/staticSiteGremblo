@@ -1,0 +1,32 @@
+$gutter: 16px;
+$minWidth: 320px;
+$maxWidth: 1fr;
+
+/*
+1. 1:1 - 100%
+2. 16:9 - 56.25%
+3. 4:3 - 75%
+4. 3:2 - 66.66%
+5. 8:5 - 62.5%
+*/
+$ratio: 56.25%;
+
+.postContainer {
+    display: grid;
+    grid-gap: $gutter;
+    /*
+	Minimum Width = 368px
+	Maximum Width = 1fr i.e full width
+	A card will wrap to next row if the browser can not fit cards with their minimum width
+	
+	auto-fill - this will try to fill all the columns or leave an empty columns if there aren't enough cards
+	*/
+    grid-template-columns: repeat(auto-fill, minmax($minWidth, $maxWidth));
+
+    // auto-fit - this will fit all the cards in single row if the browser's width is equal to width of all the cards combine + gap
+    // grid-template-columns: repeat(auto-fit, minmax($minWidth, $maxWidth));
+
+    @media screen and (max-width: 320px) {
+        grid-template-columns: repeat(auto-fill, minmax(100%, $maxWidth));
+    }
+}

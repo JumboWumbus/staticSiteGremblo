@@ -1,39 +1,46 @@
 import Link from 'next/link';
 import { slugify } from '../utils';
 
+import s from '../styles/Post.module.scss';
+
 export default function Post({ post }) {
   const date = new Date(post.frontmatter.date);
   console.log(`INSIDE POST IMAGE = ${post.frontmatter.image}`);
+  console.log(`READ TIME = ${post.frontmatter.readTime}`);
   return (
-    <div className='card mb-4'>
-      <a href={`/blog/post/${post.frontmatter.slug}`}>
+    <div className={s.postContainer}>
+      <a href={`/blog/post/${post.frontmatter.slug}.html`}>
         {' '}
-        <img className='card-img-top' src={post.frontmatter.image} alt='...' />
+        <img src={post.frontmatter.image} alt='...' />
       </a>
-      <div className='card-body'>
-        <div className='small text-muted'>{`${
-          date.getMonth() + 1
-        } - ${date.getDate()} - ${date.getFullYear()}`}</div>
+      <div className={s.cardBody}>
+        <h2 className={s.title}>{post.frontmatter.title}</h2>
 
-        <div>
+        <p className={s.summary}>{post.frontmatter.summary}</p>
+        <div className={s.tagContainer}>
           {' '}
-          {post.frontmatter.tags.map(tag => {
-            const slug = slugify(tag);
+          {post.frontmatter.categories.map(category => {
+            const slug = slugify(category);
 
             return (
-              <Link key={tag} href={`/blog/tag/${slug}`}>
+              <Link key={category} href={`/blog/category/${slug}.html`}>
                 <a className='btn'>
-                  <h6 className=' post-title'>#{tag}</h6>
+                  <h5 className={s.tag}>{category}</h5>
                 </a>
               </Link>
             );
           })}{' '}
         </div>
-        <h2 className='card-title'>{post.frontmatter.title}</h2>
-        <p className='card-text'>{post.frontmatter.summary}</p>
-        <Link href={`/blog/post/${post.frontmatter.slug}`}>
-          <a className='btn'>Read More</a>
-        </Link>
+        <div className={s.cardFooter}>
+          <ul>
+            <li className={s.postDate}>
+              {`${date.getDate()} - ${
+                date.getMonth() + 1
+              } - ${date.getFullYear()}`}
+            </li>
+            <li>{`${post.frontmatter.readTime} read`}</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

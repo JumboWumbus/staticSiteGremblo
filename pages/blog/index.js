@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import { sortByDate } from '../../utils';
 import Post from '../../components/Post';
 import Searchbar from '../../components/Searchbar';
+import s from '../../styles/Blog.module.scss';
 
 export default function BlogHome({ posts }) {
   return (
@@ -11,7 +12,7 @@ export default function BlogHome({ posts }) {
       {/*Banner or hero here*/}
       <div className='container'>
         <div className='row'>
-          <div className='col-lg-8'>
+          <div className={s.postContainer}>
             {posts.map((post, index) => (
               <Post key={index} post={post} />
             ))}

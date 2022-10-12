@@ -16,7 +16,24 @@ export default function Search() {
         post.frontmatter.summary.toLowerCase().includes(query.q) ||
         post.frontmatter.description.toLowerCase().includes(query.q)
       ) {
-        console.log(`ASS ${post.frontmatter.image}`);
+        const postFix = {
+          post: {
+            slug: post.slug,
+            frontmatter: {
+              author: post.frontmatter.author,
+              categories: post.frontmatter.categories,
+              date: post.frontmatter.date,
+              description: post.frontmatter.date,
+              image: post.frontmatter.image,
+              images: post.frontmatter.images,
+              slug: post.frontmatter.slug,
+              summary: post.frontmatter.summary,
+              tags: post.frontmatter.tags,
+              title: post.frontmatter.title,
+              draft: post.frontmatter.draft
+            }
+          }
+        };
         posts.push(post);
       }
     }
@@ -28,6 +45,7 @@ export default function Search() {
       <Head>
         <title>Dev Blog</title>
       </Head>
+
       {/*Insert title here */}
       <div className='container'>
         <div className='row'>

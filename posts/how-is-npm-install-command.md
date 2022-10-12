@@ -3,8 +3,9 @@ author: 'Rajdeep Singh'
 categories: ['npm', 'npm-cli', 'npm install command']
 date: '2022-03-20T13:09:24Z'
 description: 'Npm install command help to install package from npmjs.org'
-image: 'images/npm-init-command-1.png'
-images: ['images/npm-init-command-1.png']
+readTime: '10 min'
+image: '/images/next.js-add-css-code.jpg'
+images: ['/images/next.js-add-css-code.jpg']
 slug: 'how-is-npm-install-command'
 summary: 'Npm install command help to install package from npmjs.org'
 tags: ['npm', 'npm-cli', 'npm install command']

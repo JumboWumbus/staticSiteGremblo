@@ -10,7 +10,7 @@ export default function ItemPost({ post: { post } }) {
 
   return (
     <div className='card mb-4'>
-      <a href={`/blog/post/${post.slug}`}>
+      <a href={`/blog/post/${post.slug}.html`}>
         {' '}
         <img
           className='card-img-top'
@@ -24,7 +24,7 @@ export default function ItemPost({ post: { post } }) {
         } - ${date.getDate()} - ${date.getFullYear()}`}</div>
         <h2 className='card-title'>{post.title}</h2>
         <p className='card-text'>{post.summary}</p>
-        <Link href={`/blog/post/${post.slug}`}>
+        <Link href={`/blog/post/${post.slug}.html`}>
           <a className='btn'>Read More</a>
         </Link>
       </div>
