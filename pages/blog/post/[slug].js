@@ -1,10 +1,10 @@
-const prism = require('prismjs');
+import prism from 'prismjs';
 
-require('prismjs/components/prism-json');
-require('prismjs/plugins/line-numbers/prism-line-numbers');
-require('prismjs/plugins/toolbar/prism-toolbar');
-require('prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard');
-require('prismjs/plugins/show-language/prism-show-language');
+import 'prismjs/components/prism-json';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
+import 'prismjs/plugins/toolbar/prism-toolbar';
+import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import 'prismjs/plugins/show-language/prism-show-language';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/plugins/toolbar/prism-toolbar.css';
 
@@ -20,12 +20,16 @@ import { decode } from 'html-entities';
 
 import s from '../../../styles/BlogPost.module.scss';
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PostPage({ content, frontmatter }) {
   useEffect(() => {
-    prism.highlightAll();
-  }, []);
+    const highlight = async () => {
+      await Prism.highlightAll(); // <--- prepare Prism
+    };
+    highlight(); // <--- call the async function
+  }, [content]);
+
   const date = new Date(frontmatter.date);
 
   const doc = parser(marked.parse(content));
@@ -94,10 +98,13 @@ export default function PostPage({ content, frontmatter }) {
                   })}{' '}
                 </div>
               </div>
-              <div
-                className='post-body p-5 m-auto'
-                dangerouslySetInnerHTML={{ __html: marked.parse(content) }}
-              ></div>
+
+              <>
+                <div
+                  className='post-body p-5 m-auto'
+                  dangerouslySetInnerHTML={{ __html: marked.parse(content) }}
+                ></div>
+              </>
             </div>
           </article>
           <aside className={s.sidebar}>Sidebar</aside>
